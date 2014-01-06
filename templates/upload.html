@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<form class="upload-image-form" method="POST" target="upload-target" action="{% url 'saveFileUpload' %}" enctype="multipart/form-data">
+{% csrf_token %}
+<div>Max File Size: 150KB</div>
+<input type="file" class="image-upload" name="image-upload">  
+<input class="button" type="submit" value="Upload">
+<div>
+Upload Status: <form><textarea class="upload-status"></textarea></form>
+</div>
+</form>
+
+<iframe seamless class="upload-target" name="upload-target" src="{% url 'blank' %}"></iframe>
+{% endblock content %}
+
+{% block jquery %}
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+$('.upload-target').on('load',function(){
+
+	var justUpdated = '';
+
+	var iframeContent = $(this).contents().find("body").html();
+	justUpdated = $(this).contents().find('#just-updated').html();
+
+	console.log(iframeContent);
+
+	/**
+	$('.upload-status').html('').append(iframeContent)
+	*/
+	$('.upload-status').val(iframeContent)
+});
+
+});
+
+</script>
+
+{% endblock jquery %}
